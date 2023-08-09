@@ -7,7 +7,7 @@ from langchain.document_loaders.csv_loader import CSVLoader
 # from langchain.vectorstores import FAISS
 # from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI
+# from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from dotenv import load_dotenv
 import streamlit as st
@@ -18,13 +18,13 @@ embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2"
 
 # 1.矢量化数据
 
-loader = CSVLoader("reshaped_car_data_1k.csv")
-documents = loader.load()
-text_splitter = CharacterTextSplitter(chunk_size=1, chunk_overlap=0)
-docs = text_splitter.split_documents(documents)
+loader = CSVLoader("reshaped_car_data_2w.csv")
+# documents = loader.load()
+# text_splitter = CharacterTextSplitter(chunk_size=1, chunk_overlap=0)
+# docs = text_splitter.split_documents(documents)
+# db2 = Chroma.from_documents(docs, embedding_function, persist_directory="./chroma_db")
 
-db2 = Chroma.from_documents(docs, embedding_function, persist_directory="./chroma_db")
-# db3 = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
+db3 = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
 
 # loader = CSVLoader(file_path="reshaped_car_data_1000.csv")
 # documents = loader.load()
@@ -33,11 +33,10 @@ db2 = Chroma.from_documents(docs, embedding_function, persist_directory="./chrom
 # 2.做相似性搜索
 def retrieve_info(query):
     # similar_response = db.similarity_search(query,k=3)
-    print('>>>>>>>>>',db3)
-    # similar_response = db3.similarity_search(query)
-    # page_contents_array = [doc.page_content for doc in similar_response]
-    # print(page_contents_array)
-    # return page_contents_array
+    similar_response = db3.similarity_search(query)
+    page_contents_array = [doc.page_content for doc in similar_response]
+    print(page_contents_array)
+    return page_contents_array
 
 # custom_prompt = """
 #     我想合作或定制服务，怎么联系？
@@ -46,7 +45,15 @@ def retrieve_info(query):
 # print(results)
 
 # 3.设置LLMChain和提示
-llm=ChatOpenAI(temperature=0, model='gpt-3.5-turbo-16k-0613')
+
+import os
+os.environ["DASHSCOPE_API_KEY"] = 'sk-38e455061c004036a70f661a768ba779'
+DASHSCOPE_API_KEY='sk-38e455061c004036a70f661a768ba779'
+from langchain.llms import Tongyi
+from langchain import PromptTemplate, LLMChain
+
+llm = Tongyi(model_kwargs={"api_key":DASHSCOPE_API_KEY},model_name= "qwen-7b-chat-v1")
+# llm=ChatOpenAI(temperature=0, model='gpt-3.5-turbo-16k-0613')
 template = """
     你是一名经验丰富的汽车口碑知识库客服机器人.
     我将与你分享一位客户的用车方面的问题，你将给出一个最佳答案。
@@ -63,6 +70,8 @@ prompt=PromptTemplate(
     input_variables=["message","best_practice"],
     template=template
 )
+
+# llm_chain = LLMChain(prompt=prompt, llm=llm)
 chain=LLMChain(llm=llm,prompt=prompt)
 # 4.检索生成结果
 def generate_response(message):
@@ -79,20 +88,34 @@ def generate_response(message):
 # 5.创建一个应用使用streamlit框架
 def main():
     st.set_page_config(
-        page_title="用车口碑PGT",page_icon="🚗")
+        page_title="用车口碑GPT",page_icon="🚗")
 
-    st.header("用车口碑PGT 🚗")
-    message = st.text_area("例：丰田卡罗拉2021款的高速表现如何？")
+    st.header("用车口碑GPT 🚗")
+    message = st.text_area("21款丰田卡罗拉油耗")
     if message:
         st.write("正在生成回复内容，请稍后...")
-
-        # result = generate_response(message)
-        # st.info(result)
+        result = generate_response(message)
+        st.info(result)
         st.write("")
-        print(retrieve_info('卡罗拉油耗'))
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 
 # save to disk
