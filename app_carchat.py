@@ -9,7 +9,7 @@ import streamlit as st
 
 load_dotenv()
 # 1.矢量化数据
-loader = CSVLoader(file_path="car_200.csv")
+loader = CSVLoader(file_path="reshaped_car_data_1000.csv")
 documents = loader.load()
 embeddings = OpenAIEmbeddings()
 db = FAISS.from_documents(documents,embeddings)
