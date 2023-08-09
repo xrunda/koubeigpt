@@ -1,6 +1,11 @@
+from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Chroma
+
+
 from langchain.document_loaders.csv_loader import CSVLoader
-from langchain.vectorstores import FAISS
-from langchain.embeddings.openai import OpenAIEmbeddings
+# from langchain.vectorstores import FAISS
+# from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
@@ -8,17 +13,30 @@ from dotenv import load_dotenv
 import streamlit as st
 
 load_dotenv()
+embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+
 # 1.矢量化数据
-loader = CSVLoader(file_path="reshaped_car_data_1000.csv")
+loader = CSVLoader("reshaped_car_data_2w.csv")
 documents = loader.load()
-embeddings = OpenAIEmbeddings()
-db = FAISS.from_documents(documents,embeddings)
+text_splitter = CharacterTextSplitter(chunk_size=1, chunk_overlap=0)
+docs = text_splitter.split_documents(documents)
+
+db2 = Chroma.from_documents(docs, embedding_function, persist_directory="./chroma_db")
+# db3 = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
+
+# loader = CSVLoader(file_path="reshaped_car_data_1000.csv")
+# documents = loader.load()
+# embeddings = OpenAIEmbeddings()
+# db = FAISS.from_documents(documents,embeddings)
 # 2.做相似性搜索
 def retrieve_info(query):
-    similar_response = db.similarity_search(query,k=3)
-    page_contents_array = [doc.page_content for doc in similar_response]
-    print(page_contents_array)
-    return page_contents_array
+    # similar_response = db.similarity_search(query,k=3)
+    print('>>>>>>>>>',db3)
+    # similar_response = db3.similarity_search(query)
+    # page_contents_array = [doc.page_content for doc in similar_response]
+    # print(page_contents_array)
+    # return page_contents_array
+
 # custom_prompt = """
 #     我想合作或定制服务，怎么联系？
 # """
@@ -50,6 +68,9 @@ def generate_response(message):
     response = chain.run(message=message,best_practice=best_practice)
     return response
 
+# def saveDisk():
+#     db2 = Chroma.from_documents(docs, embedding_function, persist_directory="./chroma_db")
+#     docs = db2.similarity_search(query)
 
 # response=generate_response(message)
 # print(response)
@@ -60,14 +81,24 @@ def main():
 
     st.header("用车口碑PGT 🚗")
     message = st.text_area("例：丰田卡罗拉2021款的高速表现如何？")
-
     if message:
         st.write("正在生成回复内容，请稍后...")
 
-        result = generate_response(message)
-        
-        st.info(result)
+        # result = generate_response(message)
+        # st.info(result)
         st.write("")
+        print(retrieve_info('卡罗拉油耗'))
 
 if __name__ == "__main__":
     main()
+
+# 
+# save to disk
+# db2 = Chroma.from_documents(docs, embedding_function, persist_directory="./chroma_db")
+# docs = db2.similarity_search(query)
+
+# # load from disk
+# db3 = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
+# docs = db3.similarity_search(query)
+# print(docs[0].page_content)
+# https://python.langchain.com/docs/integrations/vectorstores/chroma#basic-example-including-saving-to-disk
