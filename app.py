@@ -12,11 +12,13 @@ from langchain.chains import LLMChain
 from dotenv import load_dotenv
 import streamlit as st
 
+
 load_dotenv()
 embedding_function = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
 # 1.矢量化数据
-loader = CSVLoader("reshaped_car_data_2w.csv")
+
+loader = CSVLoader("reshaped_car_data_1k.csv")
 documents = loader.load()
 text_splitter = CharacterTextSplitter(chunk_size=1, chunk_overlap=0)
 docs = text_splitter.split_documents(documents)
