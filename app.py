@@ -56,10 +56,10 @@ def generate_response(message):
 # 5.创建一个应用使用streamlit框架
 def main():
     st.set_page_config(
-        page_title="智能汽车销售客服",page_icon="🔮")
+        page_title="汽车口碑PGT",page_icon="🚗")
 
-    st.header("智能汽车销售客服 🔮")
-    message = st.text_area("请说出你的购车需求和条件：")
+    st.header("汽车口碑PGT 🚗")
+    message = st.text_area("例：丰田卡罗拉2021款的高速表现如何？")
 
     if message:
         st.write("正在生成回复内容，请稍后...")
@@ -67,6 +67,7 @@ def main():
         result = generate_response(message)
         
         st.info(result)
+        st.write("")
 
 if __name__ == "__main__":
     main()
