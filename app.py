@@ -56,9 +56,9 @@ def generate_response(message):
 # 5.创建一个应用使用streamlit框架
 def main():
     st.set_page_config(
-        page_title="汽车口碑PGT",page_icon="🚗")
+        page_title="用车口碑PGT",page_icon="🚗")
 
-    st.header("汽车口碑PGT 🚗")
+    st.header("用车口碑PGT 🚗")
     message = st.text_area("例：丰田卡罗拉2021款的高速表现如何？")
 
     if message:
