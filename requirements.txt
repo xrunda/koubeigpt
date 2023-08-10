@@ -2,6 +2,7 @@ langchain==0.0.180
 CSVLoader==0.0.2
 python-dotenv==1.0.0
 streamlit==1.18.1
+sentence_transformers==2.2.2
 # openai==0.27.6
 # tiktoken==0.4.0
 # faiss-cpu==1.7.4
