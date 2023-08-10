@@ -1,4 +1,4 @@
-langchain==0.0.180
+langchain
 CSVLoader==0.0.2
 python-dotenv==1.0.0
 streamlit==1.18.1
