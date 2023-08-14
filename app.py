@@ -1,19 +1,23 @@
-import os
 
 from langchain.schema import Document
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-
 from langchain.chains.question_answering import load_qa_chain
-
 from langchain.vectorstores import Chroma
 import pandas as pd
 import json
+import os
+from dotenv import load_dotenv
+
 import streamlit as st
+from langchain.llms import OpenAI
+from langchain.retrievers.self_query.base import SelfQueryRetriever
+from langchain.chains.query_constructor.base import AttributeInfo
 
 
+load_dotenv()
 
 os.environ["DASHSCOPE_API_KEY"] = 'sk-38e455061c004036a70f661a768ba779'
 DASHSCOPE_API_KEY='sk-38e455061c004036a70f661a768ba779'
@@ -29,9 +33,6 @@ vectorstore = Chroma(persist_directory="./chroma_db_modelY", embedding_function=
 
 
 # print(len(vectorstore.get(limit=1)))
-from langchain.llms import OpenAI
-from langchain.retrievers.self_query.base import SelfQueryRetriever
-from langchain.chains.query_constructor.base import AttributeInfo
 
 metadata_field_info = [
     AttributeInfo(
