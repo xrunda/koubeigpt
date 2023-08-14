@@ -18,7 +18,6 @@ import streamlit as st
 os.environ["DASHSCOPE_API_KEY"] = 'sk-38e455061c004036a70f661a768ba779'
 DASHSCOPE_API_KEY='sk-38e455061c004036a70f661a768ba779'
 
-os.environ["OPENAI_API_KEY"]='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'
 
 embeddings = OpenAIEmbeddings()
 vectorstore = Chroma(persist_directory="./chroma_db_modelY", embedding_function=embeddings)
