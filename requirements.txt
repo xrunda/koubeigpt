@@ -5,8 +5,8 @@ CSVLoader==0.0.2
 python-dotenv==1.0.0
 streamlit==1.18.1
 sentence_transformers==2.2.2
-chromadb==0.3.29
-dashscope
+chromadb
+# dashscope
 lark
 # openai==0.27.6
 # tiktoken==0.4.0

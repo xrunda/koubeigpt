@@ -19,8 +19,6 @@ from langchain.chains.query_constructor.base import AttributeInfo
 
 load_dotenv()
 
-os.environ["DASHSCOPE_API_KEY"] = 'sk-38e455061c004036a70f661a768ba779'
-DASHSCOPE_API_KEY='sk-38e455061c004036a70f661a768ba779'
 
 embeddings = OpenAIEmbeddings()
 vectorstore = Chroma(persist_directory="./chroma_db_modelY", embedding_function=embeddings)
@@ -68,9 +66,6 @@ retriever = SelfQueryRetriever.from_llm(
     llm, vectorstore, document_content_description, metadata_field_info, verbose=True
 )
 # ,enable_limit=True
-
-# retriever=SelfQueryRetriever(search_kwargs={"k":3})
-# retriever.from_llm(llm=llm,vectorstore=vectorstore,document_content_description=document_content_description,metadata_field_info=metadata_field_info,verbose=True,enable_limit=True)
 
 
 
@@ -176,8 +171,8 @@ def generate_response(message):
 # message='特斯拉ModelY四驱能越野么？'
 
 
-# message='特斯拉Model Y的后备箱可以放下自行车么？'
-# print(generate_response(message))
+message='特斯拉Model Y的后备箱可以放下自行车么？'
+print(generate_response(message))
 
 # 5.创建一个应用使用streamlit框架
 def main():
@@ -197,5 +192,5 @@ def main():
         result_placeholder.empty()  # 清空临时消息
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
