@@ -171,8 +171,8 @@ def generate_response(message):
 # message='特斯拉ModelY四驱能越野么？'
 
 
-message='特斯拉Model Y的后备箱可以放下自行车么？'
-print(generate_response(message))
+# message='特斯拉Model Y的后备箱可以放下自行车么？'
+# print(generate_response(message))
 
 # 5.创建一个应用使用streamlit框架
 def main():
@@ -192,5 +192,5 @@ def main():
         result_placeholder.empty()  # 清空临时消息
 
 
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
