@@ -22,9 +22,9 @@ load_dotenv()
 os.environ["DASHSCOPE_API_KEY"] = 'sk-38e455061c004036a70f661a768ba779'
 DASHSCOPE_API_KEY='sk-38e455061c004036a70f661a768ba779'
 
-
+# /Users/liguang/Documents/xRunda/project/AI/github/koubeigpt/chroma_db_modelY
 embeddings = OpenAIEmbeddings()
-vectorstore = Chroma(persist_directory="./chroma_db_modelY", embedding_function=embeddings)
+vectorstore = Chroma(persist_directory="chroma_db_modelY", embedding_function=embeddings)
 
 # vectorstore.as_retriever(search_kwargs={'k': 1})
 # vectorstore.as_retriever(search_type="mmr")
