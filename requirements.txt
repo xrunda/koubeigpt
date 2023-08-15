@@ -10,5 +10,5 @@ dashscope
 lark
 # openai==0.27.6
 # tiktoken==0.4.0
-# faiss-cpu==1.7.4
-# altair==4.0
+faiss-cpu==1.7.4
+altair==4.0
